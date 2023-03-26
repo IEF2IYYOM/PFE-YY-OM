@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const ErrorResponse = require('../utils/errorResponse');
 
 
 const userController = {};
@@ -74,6 +75,22 @@ userController.login = async (req, res) => {
   userController.logout = (req, res) => {
     res.clearCookie('token');
     res.json({ message: 'Logged out successfully' });
+  };
+
+  userController.singleUser = async (req, res, next)=>{
+    try {
+      const user = await User.findById(req.params.id);
+      res.status(200).json({
+          sucess: true,
+          user
+      })
+      
+       } catch (error) {
+         next(error)
+      
+       }
+
+
   };
 
   

@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const errorHandler = require('./middlewares/error');
 const port = process.env.PORT;
 const dbURI = process.env.DATABASE;
 
@@ -35,16 +36,9 @@ app.use(cors());
 // route middleware
 app.use('/user', userRouter);
 
-// // ERROR HANDLING
-// app.use((err, req, res, next) => {
-//   if (err instanceof ValidationError) {
-//     res.status(400).json({ error: err.message });
-//   } else {
-//     console.error(err.stack);
-//     res.status(500).json({ error: 'Something went wrong' });
-//   }
-// });
+// error midlware
 
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
   res.send('Nodeserver working');
